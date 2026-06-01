@@ -1,0 +1,2 @@
+custom_planner:fw_mid_ctrl
+-DCATKIN_DEVEL_PREFIX=/home/robot/FW-mid_AutoCar_ROS1_v2/devel -DCMAKE_INSTALL_PREFIX=/home/robot/FW-mid_AutoCar_ROS1_v2/install -G Unix Makefiles

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>custom_planner</name>
+  <version>0.0.0</version>
+  <description>FW-mid Custom Planner (ROS1 Version)</description>
+  <maintainer email="robot@todo.todo">robot</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+</package>

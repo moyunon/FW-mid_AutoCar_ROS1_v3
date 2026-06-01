@@ -1,0 +1,16 @@
+<launch>
+    <arg name="map_yaml_path" default="$(find custom_planner)/maps/underground/map_2d.yaml" />
+
+    <node pkg="custom_planner" type="astar_node.py" name="astar_planner_node" output="screen">
+        <param name="map_yaml_path" value="$(arg map_yaml_path)" />
+        <param name="robot_radius_m" value="0.4" />
+        <param name="safety_margin_m" value="0.15" />
+    </node>
+
+    <node pkg="custom_planner" type="local_navigator_node.py" name="local_navigator_node" output="screen">
+        <param name="max_speed_x" value="1.0" />
+        <param name="max_speed_y" value="0.5" />
+        <param name="max_yaw_rate" value="0.8" />
+        <param name="ground_filter_z" value="0.15" />
+    </node>
+</launch>

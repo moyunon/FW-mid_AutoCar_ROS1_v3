@@ -15,5 +15,6 @@ catkin_package()
 catkin_install_python(PROGRAMS
   scripts/astar_node.py
   scripts/local_navigator_node.py
+  scripts/pointcloud_to_grid_node.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

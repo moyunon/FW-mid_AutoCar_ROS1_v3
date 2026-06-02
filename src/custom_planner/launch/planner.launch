@@ -1,16 +1,55 @@
 <launch>
     <arg name="map_yaml_path" default="$(find custom_planner)/maps/underground/map_2d.yaml" />
+    <arg name="map_source" default="static" />
+    <arg name="realtime_map_topic" default="/fast_lio_2d_map" />
+    <arg name="cloud_topic" default="/b/cloud_registered" />
+    <arg name="local_cloud_topic" default="/b/cloud_registered_body" />
+    <arg name="odom_topic" default="/b/Odometry" />
+    <arg name="rviz" default="true" />
+    <arg name="rviz_config" default="$(find custom_planner)/default.rviz" />
 
     <node pkg="custom_planner" type="astar_node.py" name="astar_planner_node" output="screen">
+        <param name="map_source" value="$(arg map_source)" />
         <param name="map_yaml_path" value="$(arg map_yaml_path)" />
+        <param name="realtime_map_topic" value="$(arg realtime_map_topic)" />
         <param name="robot_radius_m" value="0.4" />
         <param name="safety_margin_m" value="0.15" />
+        <param name="unknown_as_obstacle" value="false" />
+        <param name="auto_forbidden_enabled" value="true" />
+        <param name="auto_forbidden_window_m" value="1.0" />
+        <param name="auto_forbidden_min_points" value="8" />
+        <param name="auto_forbidden_close_m" value="0.8" />
+        <param name="auto_forbidden_min_area_m2" value="0.5" />
+        <param name="auto_forbidden_padding_m" value="0.2" />
+    </node>
+
+    <node if="$(eval arg('map_source') == 'realtime')" pkg="custom_planner" type="pointcloud_to_grid_node.py" name="pointcloud_to_grid_node" output="screen">
+        <param name="cloud_topic" value="$(arg cloud_topic)" />
+        <param name="map_topic" value="$(arg realtime_map_topic)" />
+        <param name="output_frame" value="map" />
+        <param name="resolution" value="0.05" />
+        <param name="width_m" value="66.6" />
+        <param name="height_m" value="39.6" />
+        <param name="origin_x" value="-33.3" />
+        <param name="origin_y" value="-19.8" />
+        <param name="z_min" value="0.15" />
+        <param name="z_max" value="2.0" />
+        <param name="publish_rate" value="5.0" />
+        <param name="base_value" value="0" />
+        <param name="min_points_per_cell" value="1" />
     </node>
 
     <node pkg="custom_planner" type="local_navigator_node.py" name="local_navigator_node" output="screen">
         <param name="max_speed_x" value="1.0" />
         <param name="max_speed_y" value="0.5" />
         <param name="max_yaw_rate" value="0.8" />
+        <param name="robot_radius" value="0.4" />
         <param name="ground_filter_z" value="0.15" />
+        <param name="obstacle_z_max" value="2.0" />
+        <param name="pointcloud_topic" value="$(arg local_cloud_topic)" />
+        <param name="odom_topic" value="$(arg odom_topic)" />
+        <param name="use_fake_pose" value="false" />
     </node>
+
+    <node if="$(arg rviz)" pkg="rviz" type="rviz" name="custom_planner_rviz" args="-d $(arg rviz_config)" output="screen" />
 </launch>

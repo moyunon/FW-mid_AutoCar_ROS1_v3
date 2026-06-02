@@ -1,0 +1,29 @@
+<launch>
+<!-- Launch file for Livox AVIA LiDAR -->
+
+	<arg name="robot_name" default="b"/>
+	<arg name="param" default="1" />
+	<arg name="rviz" default="true" />
+	<group if="$(eval arg('param') == 1)" ns="$(arg robot_name)">
+
+	<rosparam command="load" file="$(find fast_lio)/config/mid360.yaml" />
+
+	<param name="feature_extract_enable" type="bool" value="0"/>
+	<param name="point_filter_num" type="int" value="3"/>
+	<param name="max_iteration" type="int" value="3" />
+	<param name="filter_size_surf" type="double" value="0.5" />
+	<param name="filter_size_map" type="double" value="0.5" />
+	<param name="cube_side_length" type="double" value="1000" />
+	<param name="runtime_pos_log_enable" type="bool" value="0" />
+    <node pkg="fast_lio" type="fastlio_mapping" name="laserMapping" output="screen" /> 
+
+	<node pkg="fast_lio" type="pose_tran" name="pose_tran" output="screen" />
+
+	<node pkg="laser_scan" type="creat_line" name="creat_line" output="screen" /> 
+	</group>
+
+	<group if="$(arg rviz)">
+	<node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz_b" args="-d $(find fast_lio)/rviz_cfg/localization.rviz" />
+	</group> 
+
+</launch>

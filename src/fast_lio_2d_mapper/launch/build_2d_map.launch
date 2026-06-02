@@ -1,0 +1,24 @@
+<launch>
+    <arg name="cloud_topic" default="/b/cloud_registered" />
+    <arg name="map_topic" default="/fast_lio_2d_map" />
+    <arg name="output_dir" default="$(find custom_planner)/maps/generated" />
+    <arg name="map_name" default="map_2d" />
+
+    <node pkg="fast_lio_2d_mapper" type="cloud_to_2d_map_node.py" name="fast_lio_2d_mapper" output="screen">
+        <param name="cloud_topic" value="$(arg cloud_topic)" />
+        <param name="map_topic" value="$(arg map_topic)" />
+        <param name="output_dir" value="$(arg output_dir)" />
+        <param name="map_name" value="$(arg map_name)" />
+        <param name="frame_id" value="map" />
+        <param name="resolution" value="0.05" />
+        <param name="width_m" value="66.6" />
+        <param name="height_m" value="39.6" />
+        <param name="origin_x" value="-33.3" />
+        <param name="origin_y" value="-19.8" />
+        <param name="z_min" value="0.15" />
+        <param name="z_max" value="2.0" />
+        <param name="min_points_per_cell" value="1" />
+        <param name="publish_rate" value="2.0" />
+        <param name="unknown_value" value="0" />
+    </node>
+</launch>
